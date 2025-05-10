@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LED Ticker</title>
+  <title>Seamless LED Ticker</title>
+  <meta name="viewport" content="width=416, initial-scale=1.0">
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       width: 416px;
@@ -12,34 +13,53 @@
       background-color: black;
       overflow: hidden;
     }
-    #ticker {
+    .ticker-wrapper {
       position: absolute;
+      top: 230px;
+      height: 60px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .ticker {
+      display: inline-block;
       white-space: nowrap;
-      color: white;
-      font-size: 64px;
-      animation: scroll 20s linear infinite;
+      animation: scroll 15s linear infinite;
     }
     @keyframes scroll {
-      from { left: 416px; }
-      to { left: -100%; }
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .text {
+      display: inline-block;
+      color: white;
+      font-size: 72px;
+      padding-right: 100px; /* spacing between repetitions */
     }
   </style>
 </head>
 <body>
-  <div id="ticker">Loading...</div>
+  <div class="ticker-wrapper">
+    <div class="ticker" id="ticker">
+      <span class="text" id="text1">Loading…</span>
+      <span class="text" id="text2">Loading…</span>
+    </div>
+  </div>
+
   <script>
     async function loadTicker() {
       try {
         const res = await fetch("data.json");
         const data = await res.json();
-        document.getElementById("ticker").textContent = data.message;
+        document.getElementById("text1").textContent = data.message;
+        document.getElementById("text2").textContent = data.message;
       } catch (e) {
-        document.getElementById("ticker").textContent = "Could not load ticker!";
+        document.getElementById("text1").textContent = "Error loading message.";
+        document.getElementById("text2").textContent = "Error loading message.";
       }
     }
 
     loadTicker();
-    setInterval(loadTicker, 30000); // Refresh every 30 seconds
+    setInterval(loadTicker, 30000); // refresh every 30 seconds
   </script>
 </body>
 </html>
