@@ -19,21 +19,18 @@
       justify-content: space-around;
       align-items: center;
       height: 80%;
-      width: 100%;
     }
-    .reel {
-      font-size: 100px;
+    .reel img {
       width: 100px;
-      text-align: center;
-      color: white;
+      height: 100px;
       animation: bounce 0.3s ease-in-out infinite;
+    }
+    .reel.stopped img {
+      animation: none !important;
     }
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-20px); }
-    }
-    .stopped {
-      animation: none !important;
     }
     #message {
       text-align: center;
@@ -46,32 +43,41 @@
 </head>
 <body>
   <div class="slot-container">
-    <div class="reel" id="reel1">🍒</div>
-    <div class="reel" id="reel2">🍋</div>
-    <div class="reel" id="reel3">💎</div>
+    <div class="reel" id="reel1"><img src="icons/cherry.png" /></div>
+    <div class="reel" id="reel2"><img src="icons/lemon.png" /></div>
+    <div class="reel" id="reel3"><img src="icons/diamond.png" /></div>
   </div>
   <div id="message"></div>
 
   <script>
-    const emojis = ["🍒", "🍋", "🔔", "💎", "7️⃣", "🍀", "🔥"];
+    const symbols = [
+      "cherry", "lemon", "bell", "diamond", "seven", "clover", "flame"
+    ];
+
     const reels = [
       document.getElementById("reel1"),
       document.getElementById("reel2"),
-      document.getElementById("reel3"),
+      document.getElementById("reel3")
     ];
-    const messageEl = document.getElementById("message");
-    let spinCount = 0;
-    const maxSpins = 20;
 
-    function getRandomEmoji() {
-      return emojis[Math.floor(Math.random() * emojis.length)];
+    const messageEl = document.getElementById("message");
+    const maxSpins = 10;
+
+    function getRandomSymbol() {
+      return symbols[Math.floor(Math.random() * symbols.length)];
+    }
+
+    function setImage(reel, symbol) {
+      reel.innerHTML = `<img src="icons/${symbol}.png" alt="${symbol}" />`;
     }
 
     function spinReels(count = 0) {
       messageEl.textContent = "";
+
       if (count < maxSpins) {
         reels.forEach(reel => {
-          reel.textContent = getRandomEmoji();
+          const symbol = getRandomSymbol();
+          setImage(reel, symbol);
         });
         setTimeout(() => spinReels(count + 1), 200);
       } else {
@@ -80,18 +86,18 @@
     }
 
     function stopReels() {
-      const finalValues = [];
+      const finalSymbols = [];
+
       reels.forEach((reel, index) => {
         setTimeout(() => {
-          const emoji = getRandomEmoji();
-          reel.textContent = emoji;
+          const symbol = getRandomSymbol();
+          setImage(reel, symbol);
           reel.classList.add("stopped");
-          finalValues[index] = emoji;
+          finalSymbols[index] = symbol;
 
           if (index === reels.length - 1) {
-            // After last reel stops
             setTimeout(() => {
-              if (finalValues.every(e => e === finalValues[0])) {
+              if (finalSymbols.every(s => s === finalSymbols[0])) {
                 messageEl.textContent = "🎉 YOU WIN!";
               }
               setTimeout(() => {
@@ -100,7 +106,7 @@
               }, 2000);
             }, 500);
           }
-        }, index * 500); // staggered stop
+        }, index * 500);
       });
     }
 
