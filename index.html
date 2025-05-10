@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Seamless LED Ticker</title>
+  <title>Countdown</title>
   <meta name="viewport" content="width=416, initial-scale=1.0">
   <style>
     html, body {
@@ -13,46 +13,45 @@
       background-color: black;
       overflow: hidden;
     }
-    .ticker {
-      display: inline-block;
-      white-space: nowrap;
-      animation: scroll 25s linear infinite;
-    }
-    @keyframes scroll {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-    .text {
-      display: inline-block;
+    #countdown {
+      width: 100%;
+      height: 100%;
+      font-size: 400px;
+      font-weight: bold;
       color: white;
-      font-size: 172px;
-      padding-right: 10px; /* spacing between repetitions */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      transition: color 0.3s;
     }
   </style>
 </head>
 <body>
-  <div class="ticker-wrapper">
-    <div class="ticker" id="ticker">
-      <span class="text" id="text1">Loading…</span>
-      <span class="text" id="text2">Loading…</span>
-    </div>
-  </div>
+  <div id="countdown">25</div>
 
   <script>
-    async function loadTicker() {
-      try {
-        const res = await fetch("data.json");
-        const data = await res.json();
-        document.getElementById("text1").textContent = data.message;
-        document.getElementById("text2").textContent = data.message;
-      } catch (e) {
-        document.getElementById("text1").textContent = "Error loading message.";
-        document.getElementById("text2").textContent = "Error loading message.";
+    const countdownEl = document.getElementById("countdown");
+    const colors = ["red", "lime", "cyan", "yellow", "orange", "magenta", "white"];
+    let current = 25;
+
+    function updateDisplay() {
+      if (current >= 0) {
+        countdownEl.textContent = current;
+        countdownEl.style.color = colors[Math.floor(Math.random() * colors.length)];
+        current--;
+        setTimeout(updateDisplay, 1000);
+      } else {
+        countdownEl.textContent = "🔥";
+        countdownEl.style.color = "orange";
+        setTimeout(() => {
+          current = 25;
+          updateDisplay();
+        }, 2000);
       }
     }
 
-    loadTicker();
-    setInterval(loadTicker, 30000); // refresh every 30 seconds
+    updateDisplay();
   </script>
 </body>
 </html>
