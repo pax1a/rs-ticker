@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Countdown</title>
+  <title>LED Slot Machine</title>
   <meta name="viewport" content="width=416, initial-scale=1.0">
   <style>
     html, body {
@@ -13,46 +13,45 @@
       background-color: black;
       overflow: hidden;
     }
-    #countdown {
-      width: 100%;
-      height: 100%;
-      font-size: 380px;
-      font-weight: bold;
-      font-family: sans-serif;
-      color: white;
+    #slot {
+      font-size: 300px;
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 100%;
+      color: white;
       user-select: none;
-      transition: color 0.3s;
+      transition: transform 0.2s ease;
     }
   </style>
 </head>
 <body>
-  <div id="countdown">25</div>
+  <div id="slot">🎰</div>
 
   <script>
-    const countdownEl = document.getElementById("countdown");
-    const colors = ["red", "lime", "cyan", "yellow", "orange", "magenta", "white"];
-    let current = 25;
+    const emojis = ["🍒", "🍋", "🔔", "💎", "7️⃣", "🍀", "🔥"];
+    const slotEl = document.getElementById("slot");
+    let rounds = 0;
+    const maxRounds = 10;
 
-    function updateDisplay() {
-      if (current >= 0) {
-        countdownEl.textContent = current;
-        countdownEl.style.color = colors[Math.floor(Math.random() * colors.length)];
-        current--;
-        setTimeout(updateDisplay, 1000);
+    function spinSlot() {
+      if (rounds < maxRounds) {
+        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+        slotEl.textContent = emoji;
+        rounds++;
+        setTimeout(spinSlot, 500); // spin every 500ms
       } else {
-        countdownEl.textContent = "🔥";
-        countdownEl.style.color = "orange";
-        setTimeout(() => {
-          current = 25;
-          updateDisplay();
-        }, 2000);
+        // Final emoji result
+        const result = emojis[Math.floor(Math.random() * emojis.length)];
+        slotEl.textContent = result;
+        rounds = 0;
+
+        // Restart after short delay
+        setTimeout(spinSlot, 2000);
       }
     }
 
-    updateDisplay();
+    spinSlot();
   </script>
 </body>
 </html>
