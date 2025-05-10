@@ -28,7 +28,7 @@
       justify-content: space-around;
       background-color: black;
       align-items: center;
-      height: 40%;
+      height: 30%;
     }
     .footer-container {
       display: flex;
@@ -42,9 +42,18 @@
       height: 100px;
       animation: bounce 2.3s ease-in-out infinite;
     }
+    .last-container {
+      display: flex;
+      justify-content: space-around;
+      background-color: #bcf3a2;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+      height: 10%;
+    }
     .reel img {
-      width: 100px;
-      height: 100px;
+      width: 125px;
+      height: 125px;
       animation: bounce 0.3s ease-in-out infinite;
     }
     .reel.stopped img {
@@ -78,6 +87,7 @@
      <img src="media/sticker.png">
      <img src="media/bottle.gif">
   </div>
+  <div id="last-container">www.waterdrop.rs</div>
 
   <script>
     const symbols = [
@@ -102,7 +112,7 @@
     }
 
     function spinReels(count = 0) {
-      messageEl.textContent = "";
+      messageEl.textContent = "We wish you luck";
 
       if (count < maxSpins) {
         reels.forEach(reel => {
@@ -129,6 +139,8 @@
             setTimeout(() => {
               if (finalSymbols.every(s => s === finalSymbols[0])) {
                 messageEl.textContent = "🎉 YOU WIN!";
+              } else {
+                messageEl.textContent = "More luck next time";
               }
               setTimeout(() => {
                 reels.forEach(r => r.classList.remove("stopped"));
