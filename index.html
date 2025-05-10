@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LED Ticker</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 1720px;
+      height: 86px;
+      background-color: black;
+      overflow: hidden;
+    }
+    #ticker {
+      position: absolute;
+      white-space: nowrap;
+      color: white;
+      font-size: 64px;
+      animation: scroll 20s linear infinite;
+    }
+    @keyframes scroll {
+      from { left: 1720px; }
+      to { left: -100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="ticker">Loading...</div>
+  <script>
+    async function loadTicker() {
+      try {
+        const res = await fetch("data.json");
+        const data = await res.json();
+        document.getElementById("ticker").textContent = data.message;
+      } catch (e) {
+        document.getElementById("ticker").textContent = "Could not load ticker!";
+      }
+    }
+
+    loadTicker();
+    setInterval(loadTicker, 30000); // Refresh every 30 seconds
+  </script>
+</body>
+</html>
