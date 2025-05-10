@@ -10,16 +10,30 @@
       padding: 0;
       width: 416px;
       height: 520px;
-      background-color: green;
+      background-color: black;
       overflow: hidden;
       font-family: sans-serif;
+    }
+    .header-container {
+      display: flex;
+      justify-content: space-around;
+      background-color: #bcf3a2;
+      align-items: center;
+      height: 20%;
     }
     .slot-container {
       display: flex;
       justify-content: space-around;
       background-color: black;
       align-items: center;
-      height: 80%;
+      height: 40%;
+    }
+    .footer-container {
+      display: flex;
+      justify-content: space-around;
+      background-color: #bcf3a2;
+      align-items: center;
+      height: 20%;
     }
     .reel img {
       width: 100px;
@@ -43,12 +57,16 @@
   </style>
 </head>
 <body>
+  <div class="header-container">
+    <img src="media/logo.png" />
+  </div>
   <div class="slot-container">
     <div class="reel" id="reel1"><img src="icons/cherry.png" /></div>
     <div class="reel" id="reel2"><img src="icons/lemon.png" /></div>
     <div class="reel" id="reel3"><img src="icons/diamond.png" /></div>
   </div>
   <div id="message"></div>
+  <div class="footer-container"></div>
 
   <script>
     const symbols = [
