@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LED Slot Machine</title>
+  <title>3-Reel Slot Machine</title>
   <meta name="viewport" content="width=416, initial-scale=1.0">
   <style>
     html, body {
@@ -12,46 +12,99 @@
       height: 520px;
       background-color: black;
       overflow: hidden;
+      font-family: sans-serif;
     }
-    #slot {
-      font-size: 300px;
+    .slot-container {
       display: flex;
-      justify-content: center;
+      justify-content: space-around;
       align-items: center;
-      height: 100%;
+      height: 80%;
+      width: 100%;
+    }
+    .reel {
+      font-size: 200px;
+      width: 100px;
+      text-align: center;
       color: white;
-      user-select: none;
-      transition: transform 0.2s ease;
+      animation: bounce 0.3s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    .stopped {
+      animation: none !important;
+    }
+    #message {
+      text-align: center;
+      color: gold;
+      font-size: 48px;
+      font-weight: bold;
+      height: 20%;
     }
   </style>
 </head>
 <body>
-  <div id="slot">🎰</div>
+  <div class="slot-container">
+    <div class="reel" id="reel1">🍒</div>
+    <div class="reel" id="reel2">🍋</div>
+    <div class="reel" id="reel3">💎</div>
+  </div>
+  <div id="message"></div>
 
   <script>
     const emojis = ["🍒", "🍋", "🔔", "💎", "7️⃣", "🍀", "🔥"];
-    const slotEl = document.getElementById("slot");
-    let rounds = 0;
-    const maxRounds = 10;
+    const reels = [
+      document.getElementById("reel1"),
+      document.getElementById("reel2"),
+      document.getElementById("reel3"),
+    ];
+    const messageEl = document.getElementById("message");
+    let spinCount = 0;
+    const maxSpins = 10;
 
-    function spinSlot() {
-      if (rounds < maxRounds) {
-        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-        slotEl.textContent = emoji;
-        rounds++;
-        setTimeout(spinSlot, 500); // spin every 500ms
+    function getRandomEmoji() {
+      return emojis[Math.floor(Math.random() * emojis.length)];
+    }
+
+    function spinReels(count = 0) {
+      messageEl.textContent = "";
+      if (count < maxSpins) {
+        reels.forEach(reel => {
+          reel.textContent = getRandomEmoji();
+        });
+        setTimeout(() => spinReels(count + 1), 200);
       } else {
-        // Final emoji result
-        const result = emojis[Math.floor(Math.random() * emojis.length)];
-        slotEl.textContent = result;
-        rounds = 0;
-
-        // Restart after short delay
-        setTimeout(spinSlot, 2000);
+        stopReels();
       }
     }
 
-    spinSlot();
+    function stopReels() {
+      const finalValues = [];
+      reels.forEach((reel, index) => {
+        setTimeout(() => {
+          const emoji = getRandomEmoji();
+          reel.textContent = emoji;
+          reel.classList.add("stopped");
+          finalValues[index] = emoji;
+
+          if (index === reels.length - 1) {
+            // After last reel stops
+            setTimeout(() => {
+              if (finalValues.every(e => e === finalValues[0])) {
+                messageEl.textContent = "🎉 YOU WIN!";
+              }
+              setTimeout(() => {
+                reels.forEach(r => r.classList.remove("stopped"));
+                spinReels();
+              }, 2000);
+            }, 500);
+          }
+        }, index * 500); // staggered stop
+      });
+    }
+
+    spinReels();
   </script>
 </body>
 </html>
