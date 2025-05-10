@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <title>3-Reel Slot Machine</title>
   <meta name="viewport" content="width=416, initial-scale=1.0">
@@ -20,6 +19,9 @@
       background-color: #bcf3a2;
       align-items: center;
       height: 20%;
+    }
+    .header-container img {
+      width: 200px;
     }
     .slot-container {
       display: flex;
@@ -50,6 +52,7 @@
     #message {
       text-align: center;
       color: gold;
+      background-color: #bcf3a2;
       font-size: 48px;
       font-weight: bold;
       height: 20%;
@@ -58,12 +61,12 @@
 </head>
 <body>
   <div class="header-container">
-    <img src="media/logo.png" />
+    <img src="media/logo.png">
   </div>
   <div class="slot-container">
-    <div class="reel" id="reel1"><img src="icons/cherry.png" /></div>
-    <div class="reel" id="reel2"><img src="icons/lemon.png" /></div>
-    <div class="reel" id="reel3"><img src="icons/diamond.png" /></div>
+    <div class="reel stopped" id="reel1"><img src="icons/bell.png" alt="bell"></div>
+    <div class="reel stopped" id="reel2"><img src="icons/cherry.png" alt="cherry"></div>
+    <div class="reel stopped" id="reel3"><img src="icons/bell.png" alt="bell"></div>
   </div>
   <div id="message"></div>
   <div class="footer-container"></div>
@@ -131,5 +134,6 @@
 
     spinReels();
   </script>
-</body>
-</html>
+
+
+<div class="ByrdhouseOverlay" popover="manual"><div class="Overlay"><div class="Captions" style="font-size: 24px; line-height: 28px; max-height: 112px;"></div></div></div></body></html>
