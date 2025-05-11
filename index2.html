@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <title>Kiosk Sales Dashboard</title>
   <style>
     body {
       margin: 0;
@@ -28,7 +30,7 @@
     }
 
     .box2 {
-      width: 344px;
+      width: 516px;
       height: 172px;
       background-color: #bcf3a2;
       border: 1px solid #333;
@@ -45,24 +47,34 @@
 
     .box2 table {
       width: 100%;
+      max-width: 100%;
+      table-layout: fixed;
       border-collapse: collapse;
     }
 
     .box2 th, .box2 td {
       border: 1px solid #555;
       padding: 4px;
-      text-align: center;
     }
 
     .box2 th {
       background-color: #e0ffe0;
+      text-align: center;
     }
 
-    .box3, .box4 {
-      width: 86px;
-      height: 172px;
-      background-color: #bcf3a2;
-      border: 1px solid #333;
+    .align-left {
+      text-align: left;
+      padding-left: 6px;
+    }
+
+    .align-right {
+      text-align: right;
+      padding-right: 6px;
+    }
+
+    .total-row {
+      font-weight: bold;
+      background-color: #d0ffd0;
     }
 
     .box5 {
@@ -96,76 +108,111 @@
 
 <div class="container">
   <div class="box1">
-    <img src="flags/rs.png">
+    <img src="flags/rs.png" alt="Flag">
   </div>
   <div class="box2">
-    <div class="mode-label" id="mode">DAILY</div>
-    <table>
+    <div class="mode-label" id="mode">KIOSK INTRA DAY SALES</div>
+    <table id="data-table">
       <thead>
         <tr>
           <th>Location</th>
-          <th>Actual</th>
-          <th>Deviation</th>
+          <th>Time</th>
+          <th>Total Net</th>
+          <th>Invoices</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Galerija</td>
-          <td class="actual"></td>
-          <td class="deviation"></td>
-        </tr>
-        <tr>
-          <td>Delta City</td>
-          <td class="actual"></td>
-          <td class="deviation"></td>
-        </tr>
-        <tr>
-          <td>UŠĆE</td>
-          <td class="actual"></td>
-          <td class="deviation"></td>
-        </tr>
+        <!-- Data rows will be inserted here -->
       </tbody>
     </table>
   </div>
-  <div class="box3">Box 3</div>
-  <div class="box4">Box 4</div>
   <div class="box5">
-    <img src="media/sticker.png">
+    <img src="media/sticker.png" alt="Sticker">
   </div>
 </div>
 
 <script>
-  const dailyData = [
-    { actual: 2500, deviation: -120 },
-    { actual: 2400, deviation: 50 },
-    { actual: 2600, deviation: -30 }
-  ];
+  const FX_RATE = 117.2;
+  let showEUR = false;
+  let data = [];
 
-  const monthlyData = [
-    { actual: 75000, deviation: -1300 },
-    { actual: 74000, deviation: 800 },
-    { actual: 78000, deviation: -400 }
-  ];
-
-  let showingDaily = true;
-
-  function updateTable() {
-    const data = showingDaily ? dailyData : monthlyData;
-    const actualCells = document.querySelectorAll(".actual");
-    const deviationCells = document.querySelectorAll(".deviation");
-    const modeLabel = document.getElementById("mode");
-
-    data.forEach((row, index) => {
-      actualCells[index].textContent = row.actual + " EUR";
-      deviationCells[index].textContent = row.deviation + " EUR";
-    });
-
-    modeLabel.textContent = showingDaily ? "DAILY" : "MONTHLY";
-    showingDaily = !showingDaily;
+  function getApiUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const key = urlParams.get('key');
+    if (!key) {
+      console.error('Missing API key in URL. Use ?key=YOUR_KEY');
+      return null;
+    }
+    return `https://gcp-rs-kiosk-ticker-666962168448.europe-west3.run.app/?key=${key}`;
   }
 
-  updateTable();
-  setInterval(updateTable, 2000);
+  async function fetchData() {
+    const apiUrl = getApiUrl();
+    if (!apiUrl) return;
+
+    try {
+      const response = await fetch(apiUrl);
+      const result = await response.json();
+      data = result
+        .filter(row => parseFloat(row.total_net) > 0)
+        .sort((a, b) => parseFloat(b.total_net) - parseFloat(a.total_net));
+      updateTable();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  function updateTable() {
+    const tbody = document.querySelector('#data-table tbody');
+    tbody.innerHTML = '';
+
+    let sumTotalNet = 0;
+    let sumInvoices = 0;
+
+    data.forEach(row => {
+      const totalNet = parseFloat(row.total_net);
+      const invoices = parseInt(row.number_invoices, 10);
+      sumTotalNet += totalNet;
+      sumInvoices += invoices;
+
+      const displayTotal = showEUR
+        ? Number((totalNet / FX_RATE).toFixed(2)).toLocaleString('en-UK') + ' EUR'
+        : totalNet.toLocaleString('sr-RS') + ' RSD';
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="align-left">${row.location}</td>
+        <td class="align-left">${row.current_datetime}</td>
+        <td class="align-right">${displayTotal}</td>
+        <td class="align-right">${invoices}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    const totalDisplay = showEUR
+      ? Number((sumTotalNet / FX_RATE).toFixed(2)).toLocaleString('en-UK') + ' EUR'
+      : sumTotalNet.toLocaleString('sr-RS') + ' RSD';
+
+    const totalTr = document.createElement('tr');
+    totalTr.className = 'total-row';
+    totalTr.innerHTML = `
+      <td class="align-left" colspan="2">Total</td>
+      <td class="align-right">${totalDisplay}</td>
+      <td class="align-right">${sumInvoices}</td>
+    `;
+    tbody.appendChild(totalTr);
+  }
+
+  function startToggle() {
+    setInterval(() => {
+      showEUR = !showEUR;
+      updateTable();
+    }, 2000);
+  }
+
+  fetchData();
+  setInterval(fetchData, 60000); // refresh every 60 seconds
+  startToggle();
 </script>
 
 </body>
