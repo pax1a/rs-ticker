@@ -21,18 +21,28 @@
       background-color: black;
       border: 1px solid #333;
       display: flex;
-      justify-content: space-around;
+      flex-direction: column; /* vertical stack */
+      justify-content: center;
       align-items: center;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .box1 div {
+      text-align: center;
+      margin-bottom: 10px;
     }
 
     .box1 img {
-      width: 140px;
+      width: 100px;
     }
 
     .box2 {
       width: 516px;
       height: 172px;
-      background-color: #bcf3a2;
+      background-color: black;
+      color: white;
       border: 1px solid #333;
       padding: 6px;
       font-size: 12px;
@@ -50,7 +60,7 @@
       max-width: 100%;
       table-layout: fixed;
       border-collapse: collapse;
-      font-size: 16px;
+      font-size: 18px;
     }
 
     
@@ -62,6 +72,7 @@
 
     .box2 th {
       background-color: #e0ffe0;
+      color: black;
       text-align: center;
     }
 
@@ -78,6 +89,7 @@
     .total-row {
       font-weight: bold;
       background-color: #d0ffd0;
+      color: black;
     }
 
     .box5 {
@@ -111,10 +123,10 @@
 
 <div class="container">
   <div class="box1">
+    <div>KIOSK </br> INTRA DAY SALES</div>
     <img src="flags/rs.png" alt="Flag">
   </div>
   <div class="box2">
-    <div class="mode-label" id="mode">KIOSK INTRA DAY SALES</div>
     <table id="data-table">
       <thead>
         <tr>
