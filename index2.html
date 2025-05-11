@@ -16,9 +16,16 @@
     .box1 {
       width: 172px;
       height: 172px;
-      background-color: lightcoral;
+      background-color: black;
       border: 1px solid #333;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
+    .box1 img {
+      width: 140px;
+    }
+
 
     .box2 {
       width: 172px;
@@ -73,7 +80,9 @@
 <body>
 
 <div class="container">
-  <div class="box1">Box 1</div>
+  <div class="box1">
+    <img src="flags/rs.png">
+  </div>
   <div class="box2">
     <p><img id="flag" src="flags/rs.png"></p>
     <p>Galerija: 2,500.00 EUR</p>
