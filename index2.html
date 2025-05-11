@@ -21,7 +21,7 @@
       background-color: black;
       border: 1px solid #333;
       display: flex;
-      flex-direction: column; /* vertical stack */
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       color: white;
@@ -44,15 +44,16 @@
       background-color: black;
       color: white;
       border: 1px solid #333;
-      padding: 6px;
+      padding: 0;
       font-size: 12px;
       overflow: hidden;
     }
 
-    .mode-label {
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 4px;
+    .table-wrapper {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .box2 table {
@@ -63,15 +64,13 @@
       font-size: 18px;
     }
 
-    
-
     .box2 th, .box2 td {
       border: 1px solid #555;
       padding: 4px;
     }
 
     .box2 th {
-      background-color: #e0ffe0;
+      background-color:#bcf4a2;
       color: black;
       text-align: center;
     }
@@ -88,7 +87,7 @@
 
     .total-row {
       font-weight: bold;
-      background-color: #d0ffd0;
+      background-color: #bcf4a2;
       color: black;
     }
 
@@ -126,21 +125,25 @@
     <div>KIOSK </br> INTRA DAY SALES</div>
     <img src="flags/rs.png" alt="Flag">
   </div>
+
   <div class="box2">
-    <table id="data-table">
-      <thead>
-        <tr>
-          <th style="width: 20%;">Location</th>
-          <th style="width: 35%;">Time</th>
-          <th style="width: 30%;">Total Net</th>
-          <th style="width: 15%;">Invoices</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Data rows will be inserted here -->
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th style="width: 20%;">Location</th>
+            <th style="width: 35%;">Time</th>
+            <th style="width: 30%;">Total Net</th>
+            <th style="width: 15%;">Invoices</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data rows will be inserted here -->
+        </tbody>
+      </table>
+    </div>
   </div>
+
   <div class="box5">
     <img src="media/sticker.png" alt="Sticker">
   </div>
@@ -226,7 +229,7 @@
   }
 
   fetchData();
-  setInterval(fetchData, 60000); // refresh every 60 seconds
+  setInterval(fetchData, 60000);
   startToggle();
 </script>
 
