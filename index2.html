@@ -50,7 +50,10 @@
       max-width: 100%;
       table-layout: fixed;
       border-collapse: collapse;
+      font-size: 16px;
     }
+
+    
 
     .box2 th, .box2 td {
       border: 1px solid #555;
@@ -115,10 +118,10 @@
     <table id="data-table">
       <thead>
         <tr>
-          <th>Location</th>
-          <th>Time</th>
-          <th>Total Net</th>
-          <th>Invoices</th>
+          <th style="width: 20%;">Location</th>
+          <th style="width: 35%;">Time</th>
+          <th style="width: 30%;">Total Net</th>
+          <th style="width: 15%;">Invoices</th>
         </tr>
       </thead>
       <tbody>
@@ -183,7 +186,7 @@
       tr.innerHTML = `
         <td class="align-left">${row.location}</td>
         <td class="align-left">${row.current_datetime}</td>
-        <td class="align-right">${displayTotal}</td>
+        <td class="align-right"><b>${displayTotal}</b></td>
         <td class="align-right">${invoices}</td>
       `;
       tbody.appendChild(tr);
