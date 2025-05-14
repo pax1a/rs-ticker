@@ -195,7 +195,7 @@
 
       const displayTotal = showEUR
         ? Number((totalNet / FX_RATE).toFixed(2)).toLocaleString('en-UK') + ' EUR'
-        : totalNet.toLocaleString('sr-RS') + ' RSD';
+        : totalNet.toFixed(2).toLocaleString('sr-RS') + ' RSD';
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -209,7 +209,7 @@
 
     const totalDisplay = showEUR
       ? Number((sumTotalNet / FX_RATE).toFixed(2)).toLocaleString('en-UK') + ' EUR'
-      : sumTotalNet.toLocaleString('sr-RS') + ' RSD';
+      : sumTotalNet.toFixed(2).toLocaleString('sr-RS') + ' RSD';
 
     const totalTr = document.createElement('tr');
     totalTr.className = 'total-row';
