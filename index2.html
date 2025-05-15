@@ -194,8 +194,8 @@
       sumInvoices += invoices;
 
       const displayTotal = showEUR
-        ? new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalNet / FX_RATE) + ' EUR'
-        : new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalNet) + ' RSD';
+        ? new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalNet / FX_RATE) + ' EUR'
+        : new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalNet) + ' RSD';
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -207,9 +207,9 @@
       tbody.appendChild(tr);
     });
 
-    const displayTotal = showEUR
-      ? new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalNet / FX_RATE) + ' EUR'
-      : new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalNet) + ' RSD';
+    const totalDisplay = showEUR
+      ? new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(sumTotalNet / FX_RATE) + ' EUR'
+      : new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(sumTotalNet) + ' RSD';
 
     const totalTr = document.createElement('tr');
     totalTr.className = 'total-row';
